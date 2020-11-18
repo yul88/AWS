@@ -1,2 +1,2 @@
 # AWS
-script for AWS
+script for AWS platform
