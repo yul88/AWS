@@ -191,14 +191,14 @@ def match_sf_ri(ri_sf, ins_cnt):
                 ri_sf[ec2_type] -= factor * i
                 ins_cnt[key][region] -= i
 
-                if ri_sf[ec2_type] == 0:
-                    del ri_sf[ec2_type]
-
                 if ins_cnt[key][region] == 0:
                     del ins_cnt[key][region]
 
             if ins_cnt[key] == {}:
                 del ins_cnt[key]
+
+            if ri_sf[ec2_type] == 0:
+                del ri_sf[ec2_type]
 
     return [ri_sf, ins_cnt]
 
