@@ -80,7 +80,7 @@ def lambda_handler(event, context):
 	x2.align["Cost"] = "r"
 	str += x2.get_string()
 
-	cur.execute('select "user:department" as Department, ProductName, "user:Name" as Name, UsageType, round(sum(UnBlendedCost), 2) as Cost from dbr where RecordType = "LineItem" group by Department, ProductName, Name, UsageType having Cost > 100 order by Department, ProductName, Name, UsageType;')
+	cur.execute('select "user:department" as Department, ProductName, "user:Name" as Name, UsageType, cast(round(sum(UsageQuantity)) as int) as Quantity, cast(round(sum(UnBlendedCost)) as int) as Cost from dbr where RecordType = "LineItem" group by Department, ProductName, Name, UsageType having Cost > 100 order by Department, ProductName, Name, UsageType;')
 
 	str += "\n\n* Department-ProductName-Name-UsageType View (filter: Cost>100)\n"
 	x3 = prettytable.from_db_cursor(cur)
