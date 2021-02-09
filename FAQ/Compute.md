@@ -1,6 +1,7 @@
 # Compute
 概述TBD
 
+---
 ### EC2私钥丢失
 
 AWS不会保存私钥，需要重新创建密钥对
@@ -25,9 +26,11 @@ AWS不会保存私钥，需要重新创建密钥对
 
    只有使用EIP才能保证公有IP不发生变化。另外，内网IP地址是不受关机影响的。
 
-2. 实例存储(*Instance Store*)上的内容是绑定在底层硬件上的，无法迁移。关机后会丢失。
+2. 实例存储(*Instance Store*)是绑定在底层硬件上的，无法迁移。关机后会丢失。
 
-   3系列EC2，以及m5d等机型会有实例存储。使用到实例存储的机型可查询[这个链接](https://www.cisco.com/c/en/us/products/collateral/security/firepower-2100-series/datasheet-c78-742473.html)。
+   3系列EC2，以及m5d等d结尾的机型会有[实例存储](https://www.cisco.com/c/en/us/products/collateral/security/firepower-2100-series/datasheet-c78-742473.html)。
 
-   所有EC2的根分区都是EBS存储，大部分机型也只支持EBS。EBS是和底层硬件是分离的，不受关机的影响。
+   所有EC2的根分区都是EBS存储，大部分机型也只支持EBS。
+
+   EBS是和底层硬件是分离的，不受关机的影响。
 
