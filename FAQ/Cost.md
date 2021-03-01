@@ -43,26 +43,7 @@ AWS提供的账单只能大概的了解各项服务的花销。如果需要具�
 * ElasticSearch，ElastiCache, RDS SQL Server不支持灵活匹配。
 
 ---
-### 选择合适的EC2类型
-m5d.xlarge
-
-123 4，每一位的解释如下：
-1. 实例家族
-2. 代别：数字越大性价比越高
-3. 特性:
-    * a: AMD CPU，x86核心，比Intel的便宜一些
-    * d: 带实例存储，和计算资源绑定，存储带宽和IOPS超高，但关机会丢实例存储上的数据。
-    * g: AWS Graviton CPU, ARM核心，性价比最高，适合Web Server，Database，Spark, Java/Python程序等。
-    * n: 网络优化型，用来跑高网络吞吐量的负载。
-4. 大小: xlarge代表4个vCPU。
-
-常用EC2类型 | 特点
-:--- | :---
-c | CPU:MEM = 1:2, 计算性能超同代m系列20%左右
-m | CPU:MEM = 1:4，如果不知道选哪种就选它
-r | CPU:MEM = 1:8，计算性能同m系列
-t | 性能突增型，计算性能上限同m系列，网络带宽弱于m系列
-
+### 利用t系列机型降低成本
 选t类型用于开发测试和偶尔出现Load波峰的生产负载可以极大降低成本。
 
 t系列能一直满足[基准性能](https://docs.aws.amazon.com/zh_cn/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html)，以t3/t3a类型为例：
