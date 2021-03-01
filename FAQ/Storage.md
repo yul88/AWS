@@ -8,9 +8,10 @@
 ---
 ### EC2和EBS之间的带宽
 每类EC2都有不同的EBS带宽，[参考](https://docs.aws.amazon.com/zh_cn/AWSEC2/latest/UserGuide/ebs-optimized.html)。
+
 常见机型的EBS带宽如下：
 IOPS(16KiB IO) | large | xlarge | 2xlarge
--:- | ---: | ---: | ---:
+:--- | ---: | ---: | ---:
 t3/t3a | 4000 | 4000 | 4000
 c5 | 4000 | 6000 | 10000
 m5/r5 | 3600 | 6000 | 12000
@@ -18,7 +19,7 @@ m5a/r5a | 3600 | 6000 | 8333
 c6g/m6g/r6g | 3600 | 6000 | 12000
 
 吞吐量MB/s(128KiB IO) | large | xlarge | 2xlarge
--:- | ---: | ---: | ---:
+:--- | ---: | ---: | ---:
 t3/t3a | 86.86 | 86.86 | 86.86
 c5/m5/r5| 81.25 | 143.75 | 287.5
 m5a/r5a | 81.25 | 135.63 | 197.5
@@ -42,7 +43,9 @@ EC2 > 卷 > 选中要修改的卷 > 操作 > 修改卷 > 增加卷的大小
     * EBS类型也可以在线修改，但是根分区只支持gp2/gp3类型
     * 卷修改后容量能马上变化，但是性能达到新容量的标准需要执行一段时间
 
-* 扩展文件系统，[参考](https://docs.aws.amazon.com/zh_cn/AWSEC2/latest/UserGuide/recognize-expanded-volume-linux.html)。下面是扩展根分区的例子：
+* 扩展文件系统，[参考](https://docs.aws.amazon.com/zh_cn/AWSEC2/latest/UserGuide/recognize-expanded-volume-linux.html)。
+
+下面是扩展根分区的例子：
 
 注意：如果对修改文件分区命令不熟悉，建议做好**快照**再操作。
 ```bash
