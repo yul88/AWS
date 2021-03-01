@@ -18,7 +18,8 @@
 
 * RDS PG的RDS的*pg_authid*表没有开放给用户，因此数据库的user信息无法导出。通过dump方法重建PG的时候，如果user不存在，user所属的object就无法创建。需要首先列出源上的user一览，然后在目标上重建user，才能通过dump文件恢复。
 
-### 参数组和选项组
+---
+### RDS参数组和选项组
 
 RDS用[参数组](https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/UserGuide/USER_WorkingWithParamGroups.html)来调整数据库引擎的参数，用[选项组](https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/UserGuide/USER_WorkingWithOptionGroups.html)来控制数据库插件的行为。
 
@@ -27,4 +28,28 @@ RDS用[参数组](https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/UserGuide/U
 因此，建议所有RDS启动的时候都用*自定义参数组*和*自定义选项组*。这个自定义的组可以从默认组复制，需要的时候才修改内容，这样能减少RDS重启。
 
 参数组中*可修改*项为*true*的参数都可以修改。应用类型为*dynamic*的参数修改不需要重启RDS，*static*的参数在重启后才能生效。
+
+---
+### Redshift
+
+Redshift有两个选项可以推迟升级:
+* 总是选择使用上一个版本：redshift > 修改集群 > 维护 > 维护跟踪 > 早先版本
+* 临时终止升级45天：redshift > 修改集群 > 维护 > 推迟维护时段 > Defer maintenance > 已启用
+
+Redshift的终端节点没有分为读写终端节点和只读终端节点。可以通过创建只读用户的方法来限制用户修改数据。
+```SQL
+-- 创建ro_group用来管理只读用户
+CREATE GROUP ro_group;
+-- 允许ro_group使用ro_schema并select ro_schema的表
+GRANT USAGE ON SCHEMA "ro_schema" TO GROUP ro_group;
+GRANT SELECT ON ALL TABLES IN SCHEMA "ro_schema" TO GROUP ro_group;
+-- 允许ro_group对未来新创建的表也有select权限
+ALTER DEFAULT PRIVILEGES IN SCHEMA "ro_schema" GRANT SELECT ON TABLES TO GROUP ro_group;
+-- 禁止ro_group create
+REVOKE CREATE ON SCHEMA "ro_schema" FROM GROUP ro_group;
+
+-- 创建ro_user并加入到ro_group
+CREATE USER ro_user WITH password PASSWORD;
+ALTER GROUP ro_group ADD USER ro_user;
+```
 
