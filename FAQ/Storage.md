@@ -36,7 +36,7 @@ m5/r5 | 3600 | 6000 | 12000
 m5a/r5a | 3600 | 6000 | 8333
 c6g/m6g/r6g | 3600 | 6000 | 12000
 
-吞吐量MB/s(128KiB IO) | large | xlarge | 2xlarge
+吞吐量MiB/s(128KiB IO) | large | xlarge | 2xlarge
 :--- | ---: | ---: | ---:
 t3/t3a | 86.86 | 86.86 | 86.86
 c5/m5/r5| 81.25 | 143.75 | 287.50
@@ -52,7 +52,7 @@ m5/r5 | 18750 | 18750 | 18750
 m5a/r5a | 16000 | 16000 | 16000
 c6g/m6g/r6g | 20000 | 20000 | 20000
 
-吞吐量MB/s(128KiB IO) | large | xlarge | 2xlarge
+吞吐量MiB/s(128KiB IO) | large | xlarge | 2xlarge
 :--- | ---: | ---: | ---:
 t3/t3a | 347.50 | 347.50 | 347.50
 c5/m5/r5| 593.75 | 593.75 | 593.75
@@ -74,7 +74,7 @@ EC2 > 卷 > 选中要修改的卷 > 操作 > 修改卷 > 增加卷的大小
     注意：
     * 修改卷以后，冷却时间6小时后才能再次修改
     * 文件块默认4096字节的情况下，MBR分区最大支持2TiB，GPT分区最大支持16TiB
-    * EBS类型也可以在线修改，但是根分区只支持gp2/gp3类型
+    * EBS类型也可以在线修改，但是根分区只支持gp2/gp3/io1/io2类型
     * 卷修改后容量能马上变化，但是性能达到新容量的标准需要执行一段时间
 
 * 扩展文件系统，[参考](https://docs.aws.amazon.com/zh_cn/AWSEC2/latest/UserGuide/recognize-expanded-volume-linux.html)。
