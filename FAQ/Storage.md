@@ -3,6 +3,22 @@
 
 ---
 ### EBS的类型和性能
+EBS | io2 | io1 | gp3 | gp2 | st1 | sc1
+:--- | ---: | ---: | ---: | ---: | ---: | ---:
+概述 | 高性能SSD | 高性能SSD ｜ 普通SSD | 普通SSD | 高速HDD | 普通HDD
+持久性 | 99.999% | 99.8-99.9% | 99.8-99.9% | 99.8-99.9% | 99.8-99.9% | 99.8-99.9%
+卷大小 | 4GiB-16TiB | 4GiB-16TiB | 1GiB-16TiB | 1GiB-16TiB | 125GiB-16TiB | 125GiB-16TiB
+卷最大IOPS | 64000 | 64000 | 16000 | 16000 | 500 | 250
+卷最大吞吐量MiB/s | 1000 | 1000 | 1000 | 250 | 500 | 250
+
+性能免配置型 | gp3默认配置 | gp2 | st1 | sc1
+基准性能 | 3000IOPS | 3IOPS/GiB | 40MiB/S /TiB | 12MiB/S /TiB
+突增性能 | - | 3000IOPS | 250MiB/S /TiB | 80MiB/S /TiB
+比较小的盘可能无法达到突增性能的上限，突增能维持的时间也和大小相关，[参考页面](https://docs.aws.amazon.com/zh_cn/AWSEC2/latest/UserGuide/ebs-volume-types.html)
+
+新推出的GP3类型SSD EBS，可以用默认配置，也可以预配置性能。相比GP2类型相同的性能下价格更低。
+预配置性能型 | io2 | io1 | gp3
+性能配比上限 | 500IOPS/GiB | 50IOPS/GiB | 500IOPS/GiB
 
 
 ---
