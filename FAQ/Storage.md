@@ -85,20 +85,30 @@ EC2 > 卷 > 选中要修改的卷 > 操作 > 修改卷 > 增加卷的大小
 ```bash
 # 查看文件系统和分区
 df -hT
-lsblk
+lsblk -f
 
+# 对于有分区的卷(**lsblk输出的TYPE里有part**)，要先指定新增空间全部给哪个分区
+# 没有分区的卷可以跳过这一步
 # NVME EBS
 sudo growpart /dev/nvme0n1 1
 # EBS
 sudo growpart /dev/xvda 1
 
-# NVME EBS: EXT4卷
-sudo resize2fs /dev/nvme1n1
-# EBS：EXT4卷
+# EXT4卷：NVME EBS
+sudo resize2fs /dev/nvme0n1
+# EXT4卷：EBS
 sudo resize2fs /dev/xvda1
 
-# NVME EBS或EBS：XFS卷
+# XFS卷
 sudo yum install xfsprogs
 sudo xfs_growfs -d /
 ```
+---
+### 监控S3存储桶的大小
+
+CloudWatch > 指标 > S3 > 存储指标
+
+每个桶都有**NumberOfObjects**和**BucketSizeBytes**指标，后者就是桶的大小。
+
+BucketSizeBytes会按照S3存储类别来分别统计，比如标准存储**StandardStorage**，智能分层**IntelligentTieringIAStorage**等等。
 

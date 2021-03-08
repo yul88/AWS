@@ -14,7 +14,7 @@
     * 只能扩展，不能收缩
     * 自动扩展的大小是max(5GB, 10%, FreeStorageSpace in 7hr)
     * 手动扩展至少要增加现有空间的10%
-    * 每次扩展后会有6小时的冷却时间，过了6小时之后才能再次扩展。如果预期有大量数据插入，最好提前手动扩展出足够的空间，
+    * 每次扩展后会有6小时的冷却时间，过了6小时之后才能再次扩展。如果预期有大量数据插入，最好提前手动扩展出足够的空间
 
 * RDS PG的RDS的**pg_authid**表没有开放给用户，因此数据库的user信息无法导出。通过dump方法重建PG的时候，如果user不存在，user所属的object就无法创建。需要首先列出源上的user一览，然后在目标上重建user，才能通过dump文件恢复。
 
@@ -116,6 +116,17 @@ CALL mysql.rds_rotate_slow_log;
 CALL mysql.rds_rotate_general_log;
 ```
 * InnoDB日志和表空间等其它对象
+
+---
+### RDS MySQL改wait_timeout
+根据[MySQL手册](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_wait_timeout)，需要同时修改** wait_timeout**和**interactive_timeout**才能对session的wait_timeout生效。
+
+以上两个参数都是**dynamic**参数，修改完参数组后重新连接就能生效。可以用以下命令确认。
+```sql
+show global variables like '%_timeout%';
+show session variables like '%_timeout%';
+select @@wait_timeout;
+```
 
 ---
 ### Redshift
