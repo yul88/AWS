@@ -103,6 +103,50 @@ sudo resize2fs /dev/xvda1
 sudo yum install xfsprogs
 sudo xfs_growfs -d /
 ```
+
+---
+### XFS盘无法mount
+通过快照恢复卷的时候，同一个快照恢复出来的卷的**UUID**是**相同**的。
+
+如果是XFS文件系统，则会挂载失败。
+```bash
+$ lsblk -f
+NAME          FSTYPE LABEL UUID                                 MOUNTPOINT
+nvme0n1
+├─nvme0n1p1   xfs    /     94de7db5-d3f1-476b-8f11-0787eb567c32 /
+└─nvme0n1p128
+nvme1n1
+├─nvme1n1p1   xfs    /     94de7db5-d3f1-476b-8f11-0787eb567c32
+└─nvme1n1p128
+$ sudo mount -t xfs /dev/nvme1n1p1 /mnt
+mount: /mnt: wrong fs type, bad option, bad superblock on /dev/nvme1n1p1, missing codepage or helper program, or other error.
+```
+作为临时解决方案，可以在mount命令中带上"-o nouuid"参数强制忽略UUID，不过更好的方法是**重新生成UUID**。
+```bash
+$ sudo xfs_admin -U generate /dev/nvme1n1p1
+Clearing log and setting UUID
+writing all SBs
+new UUID = 04601678-0efc-42ee-88d7-7ffd43734e21
+$ lsblk -f
+NAME          FSTYPE LABEL UUID                                 MOUNTPOINT
+nvme0n1
+├─nvme0n1p1   xfs    /     94de7db5-d3f1-476b-8f11-0787eb567c32 /
+└─nvme0n1p128
+nvme1n1
+├─nvme1n1p1   xfs    /     04601678-0efc-42ee-88d7-7ffd43734e21
+└─nvme1n1p128
+$ sudo mount /dev/nvme1n1p1 /mnt
+$ df -hT
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  461M     0  461M   0% /dev
+tmpfs          tmpfs     479M     0  479M   0% /dev/shm
+tmpfs          tmpfs     479M  444K  479M   1% /run
+tmpfs          tmpfs     479M     0  479M   0% /sys/fs/cgroup
+/dev/nvme0n1p1 xfs       8.0G  4.2G  3.9G  52% /
+tmpfs          tmpfs      96M     0   96M   0% /run/user/1000
+/dev/nvme1n1p1 xfs       8.0G  4.2G  3.9G  52% /mnt
+```
+
 ---
 ### 监控S3存储桶的大小
 
@@ -110,5 +154,5 @@ CloudWatch > 指标 > S3 > 存储指标
 
 每个桶都有**NumberOfObjects**和**BucketSizeBytes**指标，后者就是桶的大小。
 
-BucketSizeBytes会按照S3存储类别来分别统计，比如标准存储**StandardStorage**，智能分层**IntelligentTieringIAStorage**等等。
+BucketSizeBytes会按照S3存储类别来分别统计，比如标准存储**StandardStorage**，智能分层**IntelligentTieringIAStorage**等等。
 

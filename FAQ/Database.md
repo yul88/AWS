@@ -119,7 +119,7 @@ CALL mysql.rds_rotate_general_log;
 
 ---
 ### RDS MySQL改wait_timeout
-根据[MySQL手册](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_wait_timeout)，需要同时修改** wait_timeout**和**interactive_timeout**才能对session的wait_timeout生效。
+根据[MySQL手册](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_wait_timeout)，需要同时修改**wait_timeout**和**interactive_timeout**才能对session的wait_timeout生效。
 
 以上两个参数都是**dynamic**参数，修改完参数组后重新连接就能生效。可以用以下命令确认。
 ```sql
